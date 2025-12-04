@@ -1,9 +1,7 @@
 import axios from 'axios';
+import { TRIVIA_API } from '../config/config.js';
 
-const TRIVIA_API_URL = 'https://opentdb.com/api.php?amount=10&type=multiple';
-const CATEGORIES_API_URL = 'https://opentdb.com/api_category.php';
 
-// HTML decode helper function
 const decodeHTML = (html) => {
   const entities = {
     '&quot;': '"',
@@ -16,19 +14,19 @@ const decodeHTML = (html) => {
   return html.replace(/&quot;|&#039;|&amp;|&lt;|&gt;/g, (match) => entities[match]);
 };
 
-// Get available categories
+// Get available categories (names only)
 export const getCategories = async () => {
   try {
-    const response = await axios.get(CATEGORIES_API_URL);
+    const response = await axios.get(TRIVIA_API.CATEGORIES_URL);
 
     if (!response.data || !response.data.trivia_categories) {
       throw new Error('Failed to fetch categories');
     }
 
-    // Format categories with id and name
+    // Return only category names (no IDs)
     const categories = response.data.trivia_categories.map((cat) => ({
-      id: cat.id,
       name: decodeHTML(cat.name),
+      id: cat.id, 
     }));
 
     return categories;
@@ -38,17 +36,36 @@ export const getCategories = async () => {
   }
 };
 
+// Helper: Get category ID from name
+const getCategoryIdByName = async (categoryName) => {
+  try {
+    const response = await axios.get(TRIVIA_API.CATEGORIES_URL);
+    const categories = response.data.trivia_categories;
+    const category = categories.find(
+      (cat) => decodeHTML(cat.name).toLowerCase() === categoryName.toLowerCase()
+    );
+    return category ? category.id : null;
+  } catch (error) {
+    console.error('Error fetching category ID:', error.message);
+    return null;
+  }
+};
+
 // Fetch trivia questions from Open Trivia Database
-export const fetchTriviaQuestions = async (amount = 10, category = '', difficulty = '') => {
+export const fetchTriviaQuestions = async (amount = 10, categoryName = '', difficulty = '') => {
   try {
     // Build query parameters
     const params = {
       amount: amount || 10,
-      type: 'multiple', // Get multiple choice questions
+      type: 'multiple', 
     };
 
-    if (category && category !== 'any') {
-      params.category = category;
+    // If category name is provided, get its ID for the API call
+    if (categoryName && categoryName !== 'Any' && categoryName.trim() !== '') {
+      const categoryId = await getCategoryIdByName(categoryName);
+      if (categoryId) {
+        params.category = categoryId;
+      }
     }
 
     if (difficulty && difficulty !== 'any') {
@@ -56,10 +73,10 @@ export const fetchTriviaQuestions = async (amount = 10, category = '', difficult
     }
 
     // Fetch from Open Trivia Database
-    const response = await axios.get(TRIVIA_API_URL, { params });
+    const response = await axios.get(TRIVIA_API.BASE_URL, { params });
 
     if (response.data.response_code !== 0) {
-      throw new Error('Failed to fetch trivia questions');
+      throw new Error('Failed to fetch trivia questions from API');
     }
 
     // Transform and decode the questions
@@ -68,6 +85,8 @@ export const fetchTriviaQuestions = async (amount = 10, category = '', difficult
       correct_answer: decodeHTML(q.correct_answer),
       incorrect_answers: q.incorrect_answers.map((ans) => decodeHTML(ans)),
       type: q.type,
+      difficulty: q.difficulty,
+      category: decodeHTML(q.category),
     }));
 
     return questions;
