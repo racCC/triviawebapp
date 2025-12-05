@@ -318,7 +318,7 @@ User selects options → Frontend sends POST /generate
 ---
 
 ## 🔮 Future Improvements
-- [] AI-genereted Did you Know sections
+- [ ] AI-genereted Did you Know sections
 - [ ] User authentication and personal quiz history
 - [ ] Leaderboard system
 - [ ] Timed quizzes with countdown
