@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Sparkles, Loader2, BookOpen, Zap, Hash } from 'lucide-react';
 import { fetchCategories, generateQuiz } from '../services/apiClient';
-import '../styles/QuizGenerator.css';
 
 const QuizGenerator = ({ onQuizGenerated }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     amount: 10,
-    category: 'Any Category',
+    category: '',
     difficulty: 'medium',
   });
 
@@ -18,20 +19,20 @@ const QuizGenerator = ({ onQuizGenerated }) => {
 
   const loadCategories = async () => {
     try {
-      setLoading(true);
+      setCategoriesLoading(true);
       const data = await fetchCategories();
       setCategories(data);
+      if (data.length > 0) {
+        setFormData(prev => ({ ...prev, category: data[0].name }));
+      }
       setError(null);
     } catch (err) {
       console.error('Failed to load categories:', err);
-      setError('Failed to load categories. Using default options.');
-      setCategories([
-        { name: 'Any Category' },
-        { name: 'General Knowledge' },
-        { name: 'Entertainment' },
-      ]);
+      setError('Failed to load categories');
+      setCategories([{ name: 'Any Category' }]);
+      setFormData(prev => ({ ...prev, category: 'Any Category' }));
     } finally {
-      setLoading(false);
+      setCategoriesLoading(false);
     }
   };
 
@@ -62,138 +63,246 @@ const QuizGenerator = ({ onQuizGenerated }) => {
     }
   };
 
+  const difficulties = [
+    { value: 'easy', label: 'Easy', color: 'success' },
+    { value: 'medium', label: 'Medium', color: 'warning' },
+    { value: 'hard', label: 'Hard', color: 'destructive' },
+  ];
+
   return (
-    <div className="quiz-generator">
-      <h2 className="generator-title">Create Your Quiz</h2>
-      <p className="generator-subtitle">Choose your preferences and start testing your knowledge</p>
-
-      <form className="generator-form" onSubmit={handleSubmit}>
-        {/* Category Section */}
-        <div className="form-group">
-          <label htmlFor="category" className="form-label">
-            <span className="label-icon">📚</span>
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-            className="form-select"
-          >
-            {categories.map((cat) => (
-              <option key={cat.name} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+    <div className="generator-container">
+      <div className="card generator-card">
+        <div className="card-header">
+          <div className="generator-header-content">
+            <Sparkles className="generator-icon" size={28} />
+            <div>
+              <h1 className="card-title">Create Your Quiz</h1>
+              <p className="card-description">
+                Choose your preferences and test your knowledge
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Difficulty Section */}
-        <div className="form-group">
-          <label className="form-label">
-            <span className="label-icon">⚡</span>
-            Difficulty
-          </label>
-          <div className="difficulty-options">
-            {['easy', 'medium', 'hard'].map((level) => (
-              <label key={level} className="radio-label">
-                <input
-                  type="radio"
-                  name="difficulty"
-                  value={level}
-                  checked={formData.difficulty === level}
-                  onChange={handleInputChange}
-                  className="radio-input"
-                />
-                <span className="radio-text">{level.charAt(0).toUpperCase() + level.slice(1)}</span>
+        <div className="card-content">
+          <form onSubmit={handleSubmit} className="generator-form">
+            {/* Category */}
+            <div className="form-group">
+              <label className="form-label">
+                <BookOpen size={16} />
+                Category
               </label>
-            ))}
-          </div>
-        </div>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className="form-select"
+                disabled={categoriesLoading}
+              >
+                {categoriesLoading ? (
+                  <option>Loading categories...</option>
+                ) : (
+                  categories.map((cat) => (
+                    <option key={cat.name} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
 
-        {/* Question Count Section */}
-        <div className="form-group">
-          <label htmlFor="amount" className="form-label">
-            <span className="label-icon">❓</span>
-            Number of Questions: <span className="amount-display">{formData.amount}</span>
-          </label>
-          <input
-            id="amount"
-            type="range"
-            name="amount"
-            min="5"
-            max="50"
-            step="5"
-            value={formData.amount}
-            onChange={handleInputChange}
-            className="form-range"
-          />
-          <div className="range-labels">
-            <span>5</span>
-            <span>50</span>
-          </div>
-        </div>
+            {/* Difficulty */}
+            <div className="form-group">
+              <label className="form-label">
+                <Zap size={16} />
+                Difficulty
+              </label>
+              <div className="difficulty-buttons">
+                {difficulties.map((diff) => (
+                  <button
+                    key={diff.value}
+                    type="button"
+                    className={`difficulty-btn ${formData.difficulty === diff.value ? `active-${diff.color}` : ''}`}
+                    onClick={() => setFormData(prev => ({ ...prev, difficulty: diff.value }))}
+                  >
+                    {diff.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="error-message">
-            <span className="error-icon">⚠️</span>
-            {error}
-          </div>
-        )}
+            {/* Number of Questions */}
+            <div className="form-group">
+              <label className="form-label">
+                <Hash size={16} />
+                Questions: <span className="amount-value">{formData.amount}</span>
+              </label>
+              <input
+                type="range"
+                name="amount"
+                min="5"
+                max="50"
+                step="5"
+                value={formData.amount}
+                onChange={handleInputChange}
+                className="range-input"
+              />
+              <div className="range-labels">
+                <span>5</span>
+                <span>50</span>
+              </div>
+            </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn-generate"
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <span className="spinner"></span>
-              Generating...
-            </>
-          ) : (
-            <>
-              <span className="btn-icon">🚀</span>
-              Start Quiz
-            </>
-          )}
-        </button>
-      </form>
+            {/* Error */}
+            {error && (
+              <div className="error-alert">
+                {error}
+              </div>
+            )}
 
-      {/* Info Section */}
-      <div className="generator-info">
-        <div className="info-card">
-          <span className="info-icon">✨</span>
-          <div className="info-content">
-            <h3>Customizable</h3>
-            <p>Choose from various categories and difficulty levels</p>
-          </div>
-        </div>
-        <div className="info-card">
-          <span className="info-icon">💾</span>
-          <div className="info-content">
-            <h3>Saved Automatically</h3>
-            <p>Your quiz attempts are saved for future reference</p>
-          </div>
-        </div>
-        <div className="info-card">
-          <span className="info-icon">📊</span>
-          <div className="info-content">
-            <h3>Track Progress</h3>
-            <p>View your scores and quiz history anytime</p>
-          </div>
-        </div>
-        <div className="info-card">
-          <span className="info-icon">🏆</span>
-          <div className="info-content">
-            <h3>Achieve Greatness</h3>
-            <p>Complete quizzes to earn badges and recognition</p>
-          </div>
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg generate-btn"
+              disabled={loading || categoriesLoading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin" size={20} />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={20} />
+                  Generate Quiz
+                </>
+              )}
+            </button>
+          </form>
         </div>
       </div>
+
+      <style>{`
+        .generator-container {
+          display: flex;
+          justify-content: center;
+          padding: 2rem 1rem;
+        }
+
+        .generator-card {
+          width: 100%;
+          max-width: 480px;
+        }
+
+        .generator-header-content {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        .generator-icon {
+          color: var(--primary);
+          flex-shrink: 0;
+        }
+
+        .generator-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .form-label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .difficulty-buttons {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .difficulty-btn {
+          flex: 1;
+          padding: 0.625rem 1rem;
+          border: 2px solid var(--border);
+          border-radius: var(--radius);
+          background: var(--card);
+          color: var(--foreground);
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .difficulty-btn:hover {
+          border-color: var(--primary);
+        }
+
+        .difficulty-btn.active-success {
+          border-color: var(--success);
+          background: rgba(34, 197, 94, 0.1);
+          color: var(--success);
+        }
+
+        .difficulty-btn.active-warning {
+          border-color: var(--warning);
+          background: rgba(245, 158, 11, 0.1);
+          color: var(--warning);
+        }
+
+        .difficulty-btn.active-destructive {
+          border-color: var(--destructive);
+          background: rgba(239, 68, 68, 0.1);
+          color: var(--destructive);
+        }
+
+        .amount-value {
+          font-weight: 600;
+          color: var(--primary);
+        }
+
+        .range-input {
+          width: 100%;
+          height: 8px;
+          border-radius: 9999px;
+          background: var(--secondary);
+          cursor: pointer;
+          -webkit-appearance: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: var(--primary);
+          cursor: pointer;
+          border: 2px solid var(--card);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .range-labels {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.75rem;
+          color: var(--muted-foreground);
+          margin-top: 0.25rem;
+        }
+
+        .error-alert {
+          padding: 0.75rem 1rem;
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid var(--destructive);
+          border-radius: var(--radius);
+          color: var(--destructive);
+          font-size: 0.875rem;
+        }
+
+        .generate-btn {
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+      `}</style>
     </div>
   );
 };
