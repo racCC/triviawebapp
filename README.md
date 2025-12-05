@@ -1,4 +1,6 @@
 # 🧠 The Trivia Archivist
+<img width="1911" height="910" alt="image" src="https://github.com/user-attachments/assets/567c168e-c30c-4716-b117-18e0cf457630" />
+
 
 A full-stack trivia quiz application that allows users to generate, play, and track their quiz history. Built with React, Node.js, Express, and MongoDB.
 
