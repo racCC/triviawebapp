@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Sparkles, Loader2, BookOpen, Zap, Hash } from 'lucide-react';
 import { fetchCategories, generateQuiz } from '../services/apiClient';
+import '../styles/QuizGenerator.css';
 
 const QuizGenerator = ({ onQuizGenerated }) => {
   const [categories, setCategories] = useState([]);
@@ -182,127 +183,7 @@ const QuizGenerator = ({ onQuizGenerated }) => {
         </div>
       </div>
 
-      <style>{`
-        .generator-container {
-          display: flex;
-          justify-content: center;
-          padding: 2rem 1rem;
-        }
-
-        .generator-card {
-          width: 100%;
-          max-width: 480px;
-        }
-
-        .generator-header-content {
-          display: flex;
-          align-items: flex-start;
-          gap: 1rem;
-        }
-
-        .generator-icon {
-          color: var(--primary);
-          flex-shrink: 0;
-        }
-
-        .generator-form {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-        }
-
-        .form-label {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .difficulty-buttons {
-          display: flex;
-          gap: 0.5rem;
-        }
-
-        .difficulty-btn {
-          flex: 1;
-          padding: 0.625rem 1rem;
-          border: 2px solid var(--border);
-          border-radius: var(--radius);
-          background: var(--card);
-          color: var(--foreground);
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
-        .difficulty-btn:hover {
-          border-color: var(--primary);
-        }
-
-        .difficulty-btn.active-success {
-          border-color: var(--success);
-          background: rgba(34, 197, 94, 0.1);
-          color: var(--success);
-        }
-
-        .difficulty-btn.active-warning {
-          border-color: var(--warning);
-          background: rgba(245, 158, 11, 0.1);
-          color: var(--warning);
-        }
-
-        .difficulty-btn.active-destructive {
-          border-color: var(--destructive);
-          background: rgba(239, 68, 68, 0.1);
-          color: var(--destructive);
-        }
-
-        .amount-value {
-          font-weight: 600;
-          color: var(--primary);
-        }
-
-        .range-input {
-          width: 100%;
-          height: 8px;
-          border-radius: 9999px;
-          background: var(--secondary);
-          cursor: pointer;
-          -webkit-appearance: none;
-        }
-
-        .range-input::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: var(--primary);
-          cursor: pointer;
-          border: 2px solid var(--card);
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .range-labels {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.75rem;
-          color: var(--muted-foreground);
-          margin-top: 0.25rem;
-        }
-
-        .error-alert {
-          padding: 0.75rem 1rem;
-          background: rgba(239, 68, 68, 0.1);
-          border: 1px solid var(--destructive);
-          border-radius: var(--radius);
-          color: var(--destructive);
-          font-size: 0.875rem;
-        }
-
-        .generate-btn {
-          width: 100%;
-          margin-top: 0.5rem;
-        }
-      `}</style>
+      
     </div>
   );
 };
