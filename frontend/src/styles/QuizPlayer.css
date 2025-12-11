@@ -1,0 +1,236 @@
+
+          .completion-card {
+            max-width: 600px;
+            margin: 0 auto;
+          }
+
+          .completion-header {
+            text-align: center;
+            padding: 2rem 1.5rem 1rem;
+          }
+
+          .trophy-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            margin-bottom: 1rem;
+          }
+
+          .trophy-icon {
+            color: white;
+          }
+
+          .completion-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 0.25rem;
+          }
+
+          .quiz-info {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+          }
+
+          .score-display {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--secondary);
+            margin: 0 1.5rem;
+            border-radius: var(--radius);
+          }
+
+          .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+          }
+
+          .score-percentage {
+            color: white;
+            font-size: 1.75rem;
+            font-weight: 700;
+          }
+
+          .score-text {
+            color: var(--foreground);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+          }
+
+          .performance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border-radius: 9999px;
+            font-weight: 500;
+          }
+
+          .score-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.5rem;
+          }
+
+          .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+          }
+
+          .stat.correct {
+            color: var(--success);
+          }
+
+          .stat.incorrect {
+            color: var(--destructive);
+          }
+
+          .answer-review {
+            padding: 0 1.5rem 1.5rem;
+          }
+
+          .review-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+          }
+
+          .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+          }
+
+          .review-item {
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+          }
+
+          .review-item.correct {
+            border-left: 3px solid var(--success);
+          }
+
+          .review-item.incorrect {
+            border-left: 3px solid var(--destructive);
+          }
+
+          .review-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .review-icon {
+            display: flex;
+            align-items: center;
+          }
+
+          .review-icon.correct {
+            color: var(--success);
+          }
+
+          .review-icon.incorrect {
+            color: var(--destructive);
+          }
+
+          .review-num {
+            font-weight: 600;
+            font-size: 0.875rem;
+          }
+
+          .review-question {
+            font-size: 0.875rem;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+          }
+
+          .review-answers {
+            font-size: 0.8rem;
+          }
+
+          .correct-answer {
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+
+          .user-answer {
+            color: var(--destructive);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.25rem;
+          }
+
+          .completion-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 0 1.5rem 1.5rem;
+          }
+
+          .completion-actions .btn {
+            flex: 1;
+          }
+      
+          .player-container {
+          padding: 1rem;
+          max-width: 700px;
+          margin: 0 auto;
+        }
+
+         .player-card {
+          overflow: hidden;
+         }
+
+        .player-header {
+          padding: 1rem 1.5rem 0;
+        }
+
+        .header-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+        }
+
+        .btn-icon {
+          padding: 0.5rem;
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+
+        .quiz-meta {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .player-footer {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 1.5rem 1.5rem;
+          gap: 1rem;
+        }
+
+        .player-footer .btn {
+          min-width: 120px;
+        }
+      
