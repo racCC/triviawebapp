@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Check, X } from 'lucide-react';
 import '../styles/QuizQuestion.css';
+import DidYouKnow from './DidYouKnow.jsx';
 function QuizQuestion({ 
   question, 
   questionNumber, 
@@ -86,8 +87,13 @@ function QuizQuestion({
           </button>
         ))}
       </div>
-
       
+
+  {/* Did You Know - Shows after answering */}
+      <DidYouKnow 
+        question={question} 
+        show={showResult} 
+      />
     </div>
   );
 }

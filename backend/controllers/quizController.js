@@ -1,5 +1,6 @@
 import Quiz from '../models/Quiz.js';
 import { getCategories, fetchTriviaQuestions } from '../services/triviaService.js';
+import { generateDidYouKnow,generateFactsForQuiz } from '../services/dykService.js';
 
 // Get available trivia categories (names only)
 export const getOptions = async (req, res) => {
@@ -114,5 +115,62 @@ export const submitQuizAnswers = async (req, res) => {
   } catch (error) {
     console.error('Error in submitQuizAnswers:', error.message);
     res.status(500).json({ error: 'Failed to submit quiz answers' });
+  }
+  
+};
+export const getDidYouKnowFact = async (req, res) => {
+  try {
+    let body = req.body;
+
+    
+    if (typeof body === 'string') {
+      body = JSON.parse(body);
+    }
+
+    const { question, correct_answer, category } = body;
+
+    console.log('Fact request received:', { question, correct_answer, category });
+
+    if (!question || !correct_answer) {
+      return res.status(400).json({ 
+        error: 'Question and correct_answer are required' 
+      });
+    }
+
+    const fact = await generateDidYouKnow({
+      question,
+      correct_answer,
+      category: category || 'General Knowledge'
+    });
+
+    console.log('Fact generated:', fact);
+    res.json(fact);
+  } catch (error) {
+    console.error('Error in getDidYouKnowFact:', error);
+    res.status(500).json({ 
+      error: 'Failed to generate fact',
+      details: error.message 
+    });
+  }
+};
+
+// Generate facts for an entire quiz
+export const getQuizFacts = async (req, res) => {
+  try {
+    const { quizId } = req.params;
+
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found' });
+    }
+
+    const facts = await generateFactsForQuiz(quiz.questions);
+    res.json(facts);
+  } catch (error) {
+    console.error('Error getting quiz facts:', error);
+    res.status(500).json({ 
+      message: 'Failed to generate facts',
+      error: error.message 
+    });
   }
 };

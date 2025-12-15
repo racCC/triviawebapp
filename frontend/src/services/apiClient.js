@@ -94,3 +94,51 @@ export const submitQuizAnswers = async (quizId, answers) => {
     throw error;
   }
 };
+export const getDidYouKnowFact = async (question) => {
+  try {
+    console.log('Fetching fact for:', question.question);
+    
+    const response = await fetch(`${API_URL.BASE_URL}/fact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question: question.question,
+        correct_answer: question.correct_answer,
+        category: question.category || 'General Knowledge'
+      }),
+    });
+
+    console.log('Fact response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Fact API error:', errorData);
+      return null;
+    }
+
+    const data = await response.json();
+    console.log('Fact received:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching fact:', error);
+    return null;
+  }
+};
+
+// Get facts for entire quiz
+export const getQuizFacts = async (quizId) => {
+  try {
+    const response = await fetch(`${API_URL.BASE_URL}/quizzes/${quizId}/facts`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch quiz facts');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching quiz facts:', error);
+    return [];
+  }
+};

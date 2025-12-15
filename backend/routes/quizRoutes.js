@@ -5,6 +5,8 @@ import {
   getHistory,
   getQuizById,
   submitQuizAnswers,
+  getDidYouKnowFact,
+  getQuizFacts
 } from '../controllers/quizController.js';
 
 const router = express.Router();
@@ -18,10 +20,16 @@ router.post('/generate', generateQuiz);
 // GET /api/history - Get all quizzes from history
 router.get('/history', getHistory);
 
-// GET /api/quizzes/:id - Get a specific quiz by ID
+// POST /api/fact - Get a "Did You Know?" fact (MUST be before /:id routes!)
+router.post('/fact', getDidYouKnowFact);
+
+// GET /api/quizzes/:quizId/facts - Get facts for entire quiz
+router.get('/quizzes/:quizId/facts', getQuizFacts);
+
+// GET /api/:id - Get a specific quiz by ID (keep dynamic routes LAST)
 router.get('/:id', getQuizById);
 
-// POST /api/quizzes/:id/submit - Submit answers for a quiz
+// POST /api/:id/submit - Submit answers for a quiz
 router.post('/:id/submit', submitQuizAnswers);
 
 export default router;
