@@ -29,7 +29,7 @@ export default function QuizPlayer({ quiz, onBack }) {
       } else {
         setIsComplete(true);
       }
-    }, 1500);
+    }, 25000);
   };
 
   const handlePrevious = () => {

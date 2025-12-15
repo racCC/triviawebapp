@@ -1,0 +1,178 @@
+.did-you-know-container {
+  margin-top: 1rem;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.did-you-know-card {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+}
+
+.did-you-know-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.did-you-know-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.did-you-know-title {
+  font-weight: 700;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.sparkle-icon {
+  animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+.did-you-know-content {
+  padding: 1rem;
+}
+
+.did-you-know-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  color: #92400e;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.did-you-know-error {
+  text-align: center;
+  color: #92400e;
+  font-style: italic;
+}
+
+.did-you-know-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fact-emoji {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.fact-text {
+  color: #78350f;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+}
+
+.fact-topic {
+  display: inline-block;
+  align-self: center;
+  background: rgba(120, 53, 15, 0.1);
+  color: #92400e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Dark theme variant */
+.did-you-know-card.dark {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  border-color: #6366f1;
+}
+
+.did-you-know-card.dark .did-you-know-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.did-you-know-card.dark .fact-text,
+.did-you-know-card.dark .did-you-know-loading,
+.did-you-know-card.dark .did-you-know-error {
+  color: #e0e7ff;
+}
+
+.did-you-know-card.dark .fact-topic {
+  background: rgba(255, 255, 255, 0.1);
+  color: #c7d2fe;
+}
+
+/* Science theme */
+.did-you-know-card.science {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-color: #3b82f6;
+}
+
+.did-you-know-card.science .did-you-know-header {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.did-you-know-card.science .fact-text {
+  color: #1e40af;
+}
+
+/* History theme */
+.did-you-know-card.history {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #b45309;
+}
+
+/* Nature theme */
+.did-you-know-card.nature {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  border-color: #10b981;
+}
+
+.did-you-know-card.nature .did-you-know-header {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.did-you-know-card.nature .fact-text {
+  color: #065f46;
+}
